@@ -21,13 +21,14 @@ jobs:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
+      - name: Upgrade npm (OIDC trusted-publisher support)
+        run: npm install -g npm@latest
+
       - name: Install dependencies
         run: npm ci
 
       - name: Build
         run: npm run build
 
-      - name: Publish to npm
+      - name: Publish to npm (OIDC, no token)
         run: npm publish --access public --provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
