@@ -427,6 +427,14 @@ route if you need cross-admin sharing.
 
 ---
 
+## Contributors
+
+- **[Ahmad Al-Ghalban](https://github.com/AhmadAl-Ghalban)** — creator & maintainer
+
+Contributions are welcome! Feel free to open an issue or submit a pull request on the [GitHub repository](https://github.com/AhmadAl-Ghalban/strapi-plugin-conditional-field-builder).
+
+---
+
 ## License
 
-MIT
+MIT © [Ahmad Al-Ghalban](https://github.com/AhmadAl-Ghalban)
