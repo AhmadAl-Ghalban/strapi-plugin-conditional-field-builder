@@ -1,0 +1,16 @@
+{
+  "plugin.name": "منشئ الحقول الشرطية",
+  "conditional-dropdown.label": "قائمة منسدلة شرطية",
+  "conditional-dropdown.description": "قائمة منسدلة يتغير محتواها بناءً على الخيار المحدد",
+  "conditional-dropdown.placeholder": "اختر خياراً…",
+  "conditional-dropdown.no-options": "لا توجد خيارات معدة. افتح أداة بناء المحتوى لإضافتها.",
+  "conditional-dropdown.section.options": "الخيارات",
+  "conditional-dropdown.optionsJson.label": "خيارات القائمة (JSON)",
+  "conditional-dropdown.optionsJson.description": "مصفوفة من { label, value, type?, fields? }.",
+  "settings.link.label": "القائمة المنسدلة الشرطية",
+  "settings.title": "القائمة المنسدلة الشرطية — الإعدادات",
+  "settings.intro": "إدارة قالب خيارات افتراضي.",
+  "settings.default-options.label": "قالب الخيارات الافتراضي (JSON)",
+  "settings.save": "حفظ",
+  "settings.saved": "تم الحفظ"
+}

@@ -1,0 +1,16 @@
+{
+  "plugin.name": "Constructeur de champs conditionnels",
+  "conditional-dropdown.label": "Liste déroulante conditionnelle",
+  "conditional-dropdown.description": "Liste déroulante dont l'option sélectionnée affiche des champs conditionnels",
+  "conditional-dropdown.placeholder": "Sélectionnez une option…",
+  "conditional-dropdown.no-options": "Aucune option configurée. Ouvrez le Content-Type Builder pour en ajouter.",
+  "conditional-dropdown.section.options": "Options",
+  "conditional-dropdown.optionsJson.label": "Options de la liste (JSON)",
+  "conditional-dropdown.optionsJson.description": "Tableau de { label, value, type?, fields? }.",
+  "settings.link.label": "Liste déroulante conditionnelle",
+  "settings.title": "Liste déroulante conditionnelle — Paramètres",
+  "settings.intro": "Gérez un modèle d'options par défaut.",
+  "settings.default-options.label": "Modèle d'options par défaut (JSON)",
+  "settings.save": "Enregistrer",
+  "settings.saved": "Enregistré"
+}

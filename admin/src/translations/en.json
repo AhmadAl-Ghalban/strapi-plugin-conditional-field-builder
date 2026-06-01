@@ -1,0 +1,16 @@
+{
+  "plugin.name": "Conditional Field Builder",
+  "conditional-dropdown.label": "Conditional Dropdown",
+  "conditional-dropdown.description": "Dropdown whose selected option drives a set of conditional fields",
+  "conditional-dropdown.placeholder": "Select an option…",
+  "conditional-dropdown.no-options": "No options configured. Open the Content-Type Builder and add options to this field.",
+  "conditional-dropdown.section.options": "Options",
+  "conditional-dropdown.optionsJson.label": "Dropdown options (JSON)",
+  "conditional-dropdown.optionsJson.description": "Array of { label, value, type?, fields? }. Each field supports types: text, textarea, number, email, password, select, checkbox, radio, date, time, datetime, boolean, range.",
+  "settings.link.label": "Conditional Dropdown",
+  "settings.title": "Conditional Dropdown — Settings",
+  "settings.intro": "Manage a default options template. Authors can paste this into any conditional-dropdown field in the Content-Type Builder.",
+  "settings.default-options.label": "Default options template (JSON)",
+  "settings.save": "Save",
+  "settings.saved": "Saved"
+}
