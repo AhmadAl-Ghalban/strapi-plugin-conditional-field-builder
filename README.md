@@ -136,6 +136,170 @@ In the Content Manager, the editor sees:
 
 ---
 
+## More examples
+
+### Contact methods (select + email / text / textarea)
+
+```json
+[
+  {
+    "label": "Email",
+    "value": "email",
+    "fields": [
+      { "name": "address", "label": "Email address", "type": "email", "required": true },
+      { "name": "subject", "type": "text" }
+    ]
+  },
+  {
+    "label": "Phone",
+    "value": "phone",
+    "fields": [
+      { "name": "country", "type": "select", "required": true,
+        "choices": [
+          { "label": "Saudi Arabia (+966)", "value": "+966" },
+          { "label": "United States (+1)",  "value": "+1"   },
+          { "label": "United Kingdom (+44)","value": "+44"  }
+        ]
+      },
+      { "name": "number", "type": "text", "required": true, "placeholder": "5XXXXXXXX" }
+    ]
+  },
+  {
+    "label": "Message",
+    "value": "message",
+    "fields": [
+      { "name": "body", "type": "textarea", "required": true, "placeholder": "Write your message…" }
+    ]
+  }
+]
+```
+
+### Product variant (number range + checkbox + radio)
+
+```json
+[
+  {
+    "label": "Physical product",
+    "value": "physical",
+    "fields": [
+      { "name": "price",   "type": "number", "min": 0, "step": 0.01, "required": true },
+      { "name": "stock",   "type": "range",  "min": 0, "max": 1000, "step": 1 },
+      { "name": "shipping","type": "radio",
+        "choices": [
+          { "label": "Standard", "value": "standard" },
+          { "label": "Express",  "value": "express"  }
+        ]
+      },
+      { "name": "giftWrap", "label": "Gift wrap available", "type": "checkbox" }
+    ]
+  },
+  {
+    "label": "Digital product",
+    "value": "digital",
+    "fields": [
+      { "name": "price",      "type": "number", "min": 0, "step": 0.01, "required": true },
+      { "name": "downloadUrl","type": "text",   "required": true, "placeholder": "https://…" },
+      { "name": "drm",        "label": "DRM protected", "type": "boolean" }
+    ]
+  }
+]
+```
+
+### Event scheduling (date + time + datetime)
+
+```json
+[
+  {
+    "label": "All-day event",
+    "value": "allDay",
+    "fields": [
+      { "name": "day", "type": "date", "required": true },
+      { "name": "notes", "type": "textarea" }
+    ]
+  },
+  {
+    "label": "Timed event",
+    "value": "timed",
+    "fields": [
+      { "name": "startsAt", "type": "datetime", "required": true },
+      { "name": "endsAt",   "type": "datetime", "required": true }
+    ]
+  },
+  {
+    "label": "Recurring slot",
+    "value": "recurring",
+    "fields": [
+      { "name": "weekday", "type": "select", "required": true,
+        "choices": [
+          { "label": "Monday",    "value": "mon" },
+          { "label": "Tuesday",   "value": "tue" },
+          { "label": "Wednesday", "value": "wed" },
+          { "label": "Thursday",  "value": "thu" },
+          { "label": "Friday",    "value": "fri" }
+        ]
+      },
+      { "name": "time", "type": "time", "required": true }
+    ]
+  }
+]
+```
+
+### CTA block (link / form / video)
+
+```json
+[
+  {
+    "label": "Link button",
+    "value": "link",
+    "fields": [
+      { "name": "label", "type": "text", "required": true },
+      { "name": "href",  "type": "text", "required": true, "placeholder": "/about or https://…" },
+      { "name": "openInNewTab", "type": "boolean" }
+    ]
+  },
+  {
+    "label": "Newsletter form",
+    "value": "form",
+    "fields": [
+      { "name": "headline",    "type": "text" },
+      { "name": "placeholder", "type": "text", "placeholder": "you@example.com" },
+      { "name": "submitLabel", "type": "text" }
+    ]
+  },
+  {
+    "label": "Embedded video",
+    "value": "video",
+    "fields": [
+      { "name": "url",      "type": "text", "required": true },
+      { "name": "autoplay", "type": "checkbox" }
+    ]
+  }
+]
+```
+
+### Querying the stored JSON
+
+The value is stored under `type: 'json'`, so you can read it directly via the
+Strapi REST / GraphQL API or filter by the discriminator in a custom service:
+
+```ts
+// server: only return entries whose "cta" block is a video
+const entries = await strapi.documents('api::page.page').findMany({
+  filters: { cta: { selectedOption: { $eq: 'video' } } },
+});
+```
+
+```ts
+// admin / frontend: render based on selectedOption
+switch (page.cta.selectedOption) {
+  case 'link':  return <Button href={page.cta.data.href}>{page.cta.data.label}</Button>;
+  case 'form':  return <Newsletter {...page.cta.data} />;
+  case 'video': return <Video src={page.cta.data.url} autoplay={page.cta.data.autoplay} />;
+}
+```
+
+---
+
 ## Supported conditional field types
 
 `text`, `textarea`, `number`, `email`, `password`, `select`, `checkbox`,
