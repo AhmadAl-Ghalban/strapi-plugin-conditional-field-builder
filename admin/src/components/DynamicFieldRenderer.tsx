@@ -107,7 +107,7 @@ const DynamicFieldRenderer: React.FC<Props> = ({
             value={(value as string) ?? ''}
             disabled={disabled}
             placeholder={field.placeholder}
-            onChange={(v: string) => setVal(v)}
+            onChange={(v: string | number) => setVal(v == null ? '' : String(v))}
           >
             {(field.choices ?? []).map((c) => (
               <SingleSelectOption key={c.value} value={c.value}>

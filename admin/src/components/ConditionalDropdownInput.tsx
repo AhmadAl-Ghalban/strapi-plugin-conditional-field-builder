@@ -98,8 +98,9 @@ const ConditionalDropdownInput = React.forwardRef<HTMLDivElement, Props>(
       });
     };
 
-    const handleOptionChange = (nextValue: string) => {
-      emit({ selectedOption: nextValue || null, data: {} });
+    const handleOptionChange = (nextValue: string | number) => {
+      const stringValue = nextValue == null ? '' : String(nextValue);
+      emit({ selectedOption: stringValue || null, data: {} });
       setTouched({});
     };
 

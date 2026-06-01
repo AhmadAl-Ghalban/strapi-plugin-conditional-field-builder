@@ -1,56 +1,59 @@
-# Conditional Field Builder — Strapi v5 Plugin
+<div align="center">
 
-[![npm version](https://img.shields.io/npm/v/strapi-plugin-conditional-field-builder.svg)](https://www.npmjs.com/package/strapi-plugin-conditional-field-builder)
-[![npm downloads](https://img.shields.io/npm/dm/strapi-plugin-conditional-field-builder.svg)](https://www.npmjs.com/package/strapi-plugin-conditional-field-builder)
-[![license](https://img.shields.io/npm/l/strapi-plugin-conditional-field-builder.svg)](https://github.com/AhmadAl-Ghalban/strapi-plugin-conditional-field-builder/blob/main/LICENSE)
+# Conditional Field Builder
 
-> **npm:** [`strapi-plugin-conditional-field-builder`](https://www.npmjs.com/package/strapi-plugin-conditional-field-builder)
+**A Strapi v5 custom field that turns one dropdown into a schema-less, per-option form — stored as a single JSON value.**
 
-A production-ready custom field for **Strapi v5** that renders a dropdown
-whose selected value drives a dynamic set of conditional sub-fields —
-an embedded form-builder, stored as a single JSON value.
+[![npm version](https://img.shields.io/npm/v/strapi-plugin-conditional-field-builder.svg?style=flat-square&color=4945ff)](https://www.npmjs.com/package/strapi-plugin-conditional-field-builder)
+[![npm downloads](https://img.shields.io/npm/dm/strapi-plugin-conditional-field-builder.svg?style=flat-square&color=4945ff)](https://www.npmjs.com/package/strapi-plugin-conditional-field-builder)
+[![license](https://img.shields.io/npm/l/strapi-plugin-conditional-field-builder.svg?style=flat-square)](./LICENSE)
+[![Strapi v5](https://img.shields.io/badge/Strapi-v5-4945ff.svg?style=flat-square)](https://strapi.io)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178c6.svg?style=flat-square)](https://www.typescriptlang.org/)
 
-## How is this different from the built-in **Strapi v5.17 Conditional Fields**?
+[Install](#-install) · [Quick start](#-quick-start) · [Examples](#-examples) · [Field reference](#-field-reference) · [API usage](#-querying-the-stored-value)
 
-| Feature                                                | v5.17 native | **This plugin** |
-| ------------------------------------------------------ | ------------ | --------------- |
-| Toggle visibility of fields already declared in the schema | ✅           | ❌              |
-| Declare **new fields per option** without touching the schema | ❌           | ✅              |
-| Bundle the discriminator + dynamic data into **one JSON value** | ❌           | ✅              |
-| 13 sub-field types in a single field                   | ❌           | ✅              |
-| JSON-driven option/sub-field configuration in the CTB  | ❌           | ✅              |
-
-In short: **v5.17 hides fields you already have. This plugin lets one field
-morph into different shapes per option**, without growing the content-type
-schema.
-
-- Strapi v5 compatible
-- Custom Field API (`type: 'json'`)
-- TypeScript + React 18
-- `@strapi/design-system` native UI
-- Built-in validation
-- i18n (en, fr, ar — easy to extend)
-- Plugin Settings page
-- Unit tests (validation utilities)
+</div>
 
 ---
 
-## Installation
+## Why this plugin?
 
-From a Strapi v5 project root, install with your package manager of choice:
+Strapi v5.17 introduced **Conditional Fields** — but they only toggle visibility of fields **already declared in your schema**. This plugin solves the other half of the problem: letting **one field morph into a different shape per option**, without ever touching the content-type schema.
+
+| Capability                                                       | v5.17 native | **This plugin**   |
+| ---------------------------------------------------------------- | :----------: | :---------------: |
+| Hide/show fields that already exist in the schema                |      ✓       |        —          |
+| Declare **new fields per option** without schema changes         |      —       |        ✓          |
+| Bundle discriminator + dynamic data into **one JSON value**      |      —       |        ✓          |
+| 13 sub-field types inside a single field                         |      —       |        ✓          |
+| JSON-driven configuration in the Content-Type Builder            |      —       |        ✓          |
+
+---
+
+## Highlights
+
+- **Strapi v5 native** — built on the official Custom Field API (`type: 'json'`)
+- **13 field types** — `text`, `textarea`, `number`, `email`, `password`, `select`, `checkbox`, `radio`, `date`, `time`, `datetime`, `boolean`, `range`
+- **Type-safe** — TypeScript end-to-end, React 18
+- **`@strapi/design-system`** — looks and feels like the rest of the admin
+- **Built-in validation** — required, min/max, step, choices
+- **i18n** — English, French, Arabic out of the box (drop a JSON file to add more)
+- **Plugin Settings page** — store a reusable default template for your team
+- **Unit tested** — pure validation utilities covered with Vitest
+
+---
+
+## Install
 
 ```bash
-# npm
-npm i strapi-plugin-conditional-field-builder
-
-# yarn
+npm  i  strapi-plugin-conditional-field-builder
+# or
 yarn add strapi-plugin-conditional-field-builder
-
-# pnpm
+# or
 pnpm add strapi-plugin-conditional-field-builder
 ```
 
-Enable the plugin in `config/plugins.ts` (or `config/plugins.js`):
+Enable it in `config/plugins.ts` (or `.js`):
 
 ```ts
 export default ({ env }) => ({
@@ -60,27 +63,24 @@ export default ({ env }) => ({
 });
 ```
 
-Rebuild the admin panel and start Strapi:
+Rebuild the admin and start Strapi:
 
 ```bash
-npm run build
-npm run develop
+npm run build && npm run develop
 ```
 
 <details>
-<summary><b>Alternative: install from source</b> (for local development / forks)</summary>
+<summary><b>Install from source (local development / forks)</b></summary>
 
 ```bash
 git clone https://github.com/AhmadAl-Ghalban/strapi-plugin-conditional-field-builder.git \
   ./src/plugins/conditional-field-builder
 cd ./src/plugins/conditional-field-builder
-npm install
-npm run build
+npm install && npm run build
 ```
 
-Then in `config/plugins.ts` add the `resolve` path:
-
 ```ts
+// config/plugins.ts
 export default ({ env }) => ({
   'conditional-field-builder': {
     enabled: true,
@@ -88,17 +88,20 @@ export default ({ env }) => ({
   },
 });
 ```
+
 </details>
 
 ---
 
-## Usage
+## Quick start
 
-### 1. Add the field to a Content-Type
+### 1. Add the field
 
-In the **Content-Type Builder**, choose **Add another field → Custom →
-Conditional Dropdown**. In the *Options* section, paste a JSON
-configuration:
+In the **Content-Type Builder** → **Add another field** → **Custom** → **Conditional Dropdown**.
+
+### 2. Configure options as JSON
+
+In the field's *Options* panel, describe the options and the sub-fields each one should render:
 
 ```json
 [
@@ -106,7 +109,7 @@ configuration:
     "label": "Text",
     "value": "text",
     "fields": [
-      { "name": "title", "type": "text", "required": true },
+      { "name": "title",       "type": "text",     "required": true },
       { "name": "description", "type": "textarea" }
     ]
   },
@@ -129,25 +132,21 @@ configuration:
 ]
 ```
 
-### 2. Edit content
+### 3. Author content
 
-In the Content Manager, the editor sees:
-
-```
+```text
 ┌─────────────────────────────────────────────────┐
 │ My Field *                                      │
 │ ┌─────────────────────────────────────────────┐ │
-│ │ Select an option…                       ▾   │ │
+│ │  Date                                    ▾  │ │
 │ └─────────────────────────────────────────────┘ │
 │                                                 │
-│ ┌─ When "Date" is selected ─────────────────┐   │
-│ │  Date  [ 2026-01-01 📅 ]                  │   │
-│ │  Time  [ 10:00      🕑 ]                  │   │
-│ └───────────────────────────────────────────┘   │
+│  Date   [ 2026-01-01      ]                     │
+│  Time   [ 10:00           ]                     │
 └─────────────────────────────────────────────────┘
 ```
 
-### 3. Stored value
+### 4. Stored value
 
 ```json
 {
@@ -161,9 +160,10 @@ In the Content Manager, the editor sees:
 
 ---
 
-## More examples
+## Examples
 
-### Contact methods (select + email / text / textarea)
+<details open>
+<summary><b>Contact methods</b> — select + email + phone + message</summary>
 
 ```json
 [
@@ -199,7 +199,10 @@ In the Content Manager, the editor sees:
 ]
 ```
 
-### Product variant (number range + checkbox + radio)
+</details>
+
+<details>
+<summary><b>Product variants</b> — physical vs digital</summary>
 
 ```json
 [
@@ -207,9 +210,9 @@ In the Content Manager, the editor sees:
     "label": "Physical product",
     "value": "physical",
     "fields": [
-      { "name": "price",   "type": "number", "min": 0, "step": 0.01, "required": true },
-      { "name": "stock",   "type": "range",  "min": 0, "max": 1000, "step": 1 },
-      { "name": "shipping","type": "radio",
+      { "name": "price",    "type": "number", "min": 0, "step": 0.01, "required": true },
+      { "name": "stock",    "type": "range",  "min": 0, "max": 1000,  "step": 1 },
+      { "name": "shipping", "type": "radio",
         "choices": [
           { "label": "Standard", "value": "standard" },
           { "label": "Express",  "value": "express"  }
@@ -222,15 +225,18 @@ In the Content Manager, the editor sees:
     "label": "Digital product",
     "value": "digital",
     "fields": [
-      { "name": "price",      "type": "number", "min": 0, "step": 0.01, "required": true },
-      { "name": "downloadUrl","type": "text",   "required": true, "placeholder": "https://…" },
-      { "name": "drm",        "label": "DRM protected", "type": "boolean" }
+      { "name": "price",       "type": "number",  "min": 0, "step": 0.01, "required": true },
+      { "name": "downloadUrl", "type": "text",    "required": true, "placeholder": "https://…" },
+      { "name": "drm",         "label": "DRM protected", "type": "boolean" }
     ]
   }
 ]
 ```
 
-### Event scheduling (date + time + datetime)
+</details>
+
+<details>
+<summary><b>Event scheduling</b> — all-day / timed / recurring</summary>
 
 ```json
 [
@@ -238,7 +244,7 @@ In the Content Manager, the editor sees:
     "label": "All-day event",
     "value": "allDay",
     "fields": [
-      { "name": "day", "type": "date", "required": true },
+      { "name": "day",   "type": "date", "required": true },
       { "name": "notes", "type": "textarea" }
     ]
   },
@@ -269,7 +275,10 @@ In the Content Manager, the editor sees:
 ]
 ```
 
-### CTA block (link / form / video)
+</details>
+
+<details>
+<summary><b>CTA block</b> — link / newsletter form / embedded video</summary>
 
 ```json
 [
@@ -277,8 +286,8 @@ In the Content Manager, the editor sees:
     "label": "Link button",
     "value": "link",
     "fields": [
-      { "name": "label", "type": "text", "required": true },
-      { "name": "href",  "type": "text", "required": true, "placeholder": "/about or https://…" },
+      { "name": "label",        "type": "text", "required": true },
+      { "name": "href",         "type": "text", "required": true, "placeholder": "/about or https://…" },
       { "name": "openInNewTab", "type": "boolean" }
     ]
   },
@@ -302,20 +311,44 @@ In the Content Manager, the editor sees:
 ]
 ```
 
-### Querying the stored JSON
+</details>
 
-The value is stored under `type: 'json'`, so you can read it directly via the
-Strapi REST / GraphQL API or filter by the discriminator in a custom service:
+---
+
+## Field reference
+
+Each entry in `fields[]` accepts:
+
+| Property        | Type                  | Applies to             | Notes                                  |
+| --------------- | --------------------- | ---------------------- | -------------------------------------- |
+| `name`          | `string`              | all                    | **Required.** Key inside `data`        |
+| `label`         | `string`              | all                    | Defaults to `name`                     |
+| `type`          | `string`              | all                    | See list below                         |
+| `required`      | `boolean`             | all                    | Enforces required-field validation     |
+| `placeholder`   | `string`              | text-like inputs       | —                                      |
+| `min` / `max`   | `number`              | `number`, `range`      | Numeric bounds                         |
+| `step`          | `number`              | `number`, `range`      | Numeric step                           |
+| `choices`       | `[{label, value}]`    | `select`, `radio`      | Option list                            |
+| `defaultValue`  | `any`                 | all                    | Reserved for form-style initialization |
+
+**Supported types**
+`text` · `textarea` · `number` · `email` · `password` · `select` · `checkbox` · `radio` · `date` · `time` · `datetime` · `boolean` · `range`
+
+---
+
+## Querying the stored value
+
+The value is persisted as plain JSON, so you can use it directly from REST, GraphQL, or any service:
 
 ```ts
-// server: only return entries whose "cta" block is a video
+// Find pages whose "cta" block is a video
 const entries = await strapi.documents('api::page.page').findMany({
   filters: { cta: { selectedOption: { $eq: 'video' } } },
 });
 ```
 
-```ts
-// admin / frontend: render based on selectedOption
+```tsx
+// Render based on the discriminator
 switch (page.cta.selectedOption) {
   case 'link':  return <Button href={page.cta.data.href}>{page.cta.data.label}</Button>;
   case 'form':  return <Newsletter {...page.cta.data} />;
@@ -325,116 +358,84 @@ switch (page.cta.selectedOption) {
 
 ---
 
-## Supported conditional field types
-
-`text`, `textarea`, `number`, `email`, `password`, `select`, `checkbox`,
-`radio`, `date`, `time`, `datetime`, `boolean`, `range`.
-
-Each field accepts:
-
-| Property       | Type              | Notes                                |
-| -------------- | ----------------- | ------------------------------------ |
-| `name`         | string            | Required — key inside `data`         |
-| `label`        | string            | Defaults to `name`                   |
-| `type`         | string            | See list above                       |
-| `required`     | boolean           | Triggers required-field validation   |
-| `placeholder`  | string            | For text-like inputs                 |
-| `min` / `max`  | number            | For `number` / `range`               |
-| `step`         | number            | For `number` / `range`               |
-| `choices`      | `[{label,value}]` | For `select` / `radio`               |
-| `defaultValue` | any               | Reserved for forms-style init        |
-
----
-
 ## Architecture
 
-```
-my-plugin/
+```text
+strapi-plugin-conditional-field-builder/
 ├─ server/src/
-│   ├─ register.ts            # registers the custom field on the server
-│   ├─ bootstrap.ts
-│   └─ ...
+│   ├─ register.ts                       # registers the custom field on the server
+│   └─ bootstrap.ts
 ├─ admin/src/
-│   ├─ index.ts               # registers field + settings link
-│   ├─ types.ts               # shared TypeScript interfaces
+│   ├─ index.ts                          # registers field + settings link
+│   ├─ types.ts                          # shared TypeScript types
 │   ├─ components/
-│   │   ├─ ConditionalDropdownInput.tsx   # main Content Manager input
-│   │   ├─ DynamicFieldRenderer.tsx       # per-type field renderer
-│   │   └─ OptionsJsonInput.tsx           # CTB JSON config helper
+│   │   ├─ ConditionalDropdownInput.tsx  # main Content Manager input
+│   │   ├─ DynamicFieldRenderer.tsx      # per-type field renderer
+│   │   └─ OptionsJsonInput.tsx          # CTB JSON config helper
 │   ├─ pages/
-│   │   └─ SettingsPage.tsx               # plugin settings page
+│   │   └─ SettingsPage.tsx              # plugin settings page
 │   ├─ utils/
-│   │   ├─ validation.ts                  # validation + parsing helpers
-│   │   └─ __tests__/validation.test.ts   # unit tests
-│   └─ translations/
-│       ├─ en.json
-│       ├─ fr.json
-│       └─ ar.json
+│   │   ├─ validation.ts                 # pure validation + parsing helpers
+│   │   └─ __tests__/validation.test.ts
+│   └─ translations/{en,fr,ar}.json
 └─ package.json
 ```
 
-### Why `type: 'json'`?
-
-The persisted value bundles a discriminator (`selectedOption`) with a
-heterogeneous `data` map. `json` is the natural Strapi backing for that
-shape — and keeps the schema stable as authors change options.
+> **Why `type: 'json'`?** The persisted value bundles a discriminator (`selectedOption`) with a heterogeneous `data` map. JSON is the natural backing for that shape — and it keeps the content-type schema stable as authors evolve their options over time.
 
 ---
 
-## Validation
+## Validation API
 
-`utils/validation.ts` exposes pure functions used by the input and the
-unit tests:
+`utils/validation.ts` exposes pure functions used by the input and the tests:
 
-- `validateField(field, value)` — single-field validation
-- `validateValue(value, options, required)` — full-shape validation
-- `parseOptions(raw)` — accepts array or JSON string
-- `parseValue(raw)` — accepts object or JSON string
+| Function                                       | Purpose                              |
+| ---------------------------------------------- | ------------------------------------ |
+| `validateField(field, value)`                  | Validate a single sub-field          |
+| `validateValue(value, options, required)`      | Validate the full shape              |
+| `parseOptions(raw)`                            | Accepts an array or a JSON string    |
+| `parseValue(raw)`                              | Accepts an object or a JSON string   |
 
 ---
 
-## Tests
+## Scripts
 
 ```bash
-# from the plugin folder
-npm test
-```
-
-If Jest isn't wired into the host project yet, the scaffold ships
-TypeScript checks you can run today:
-
-```bash
-npm run test:ts:front
-npm run test:ts:back
+npm run build           # build the plugin
+npm run watch           # watch & rebuild
+npm run watch:link      # build + symlink into a host project
+npm test                # run unit tests (Vitest)
+npm run test:ts:front   # TypeScript check (admin)
+npm run test:ts:back    # TypeScript check (server)
 ```
 
 ---
 
 ## Internationalisation
 
-Translations live in `admin/src/translations/<locale>.json`. Add a new
-locale by dropping a file there — it is picked up automatically by
-`registerTrads`.
+Translations live under `admin/src/translations/<locale>.json`. Add a new locale by dropping a file in that folder — it's picked up automatically by `registerTrads`.
 
 ---
 
 ## Settings page
 
-Settings → **Conditional Dropdown** lets administrators store a default
-options template (JSON) that authors can copy into the Content-Type
-Builder. The value is persisted in `localStorage`; swap in a backend
-route if you need cross-admin sharing.
+**Settings → Conditional Dropdown** lets administrators store a default options template (JSON) that authors can copy into the Content-Type Builder. The value is persisted in `localStorage`; swap in a backend route if you need cross-admin sharing.
 
 ---
 
-## Contributors
+## Contributing
+
+Issues and PRs are very welcome.
+
+- **Bugs / feature requests:** [open an issue](https://github.com/AhmadAl-Ghalban/strapi-plugin-conditional-field-builder/issues)
+- **Pull requests:** fork → branch → PR against `main`
+
+### Maintainer
 
 - **[Ahmad Al-Ghalban](https://github.com/AhmadAl-Ghalban)** — creator & maintainer
-
-Contributions are welcome! Feel free to open an issue or submit a pull request on the [GitHub repository](https://github.com/AhmadAl-Ghalban/strapi-plugin-conditional-field-builder).
 
 ---
 
 ## License
 
-MIT © [Ahmad Al-Ghalban](https://github.com/AhmadAl-Ghalban)
+[MIT](./LICENSE) © [Ahmad Al-Ghalban](https://github.com/AhmadAl-Ghalban)
