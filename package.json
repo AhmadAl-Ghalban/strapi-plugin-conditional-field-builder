@@ -1,6 +1,5 @@
 {
-  "version": "0.0.0",
-  "keywords": [],
+  "version": "0.1.0",
   "type": "commonjs",
   "exports": {
     "./package.json": "./package.json",
@@ -75,5 +74,13 @@
     "variant"
   ],
   "license": "MIT",
-  "author": "AhmadAl-Ghalban <ahmadalghalban05@gmail.com>"
+  "author": "AhmadAl-Ghalban <ahmadalghalban05@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AhmadAl-Ghalban/strapi-plugin-conditional-field-builder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AhmadAl-Ghalban/strapi-plugin-conditional-field-builder/issues"
+  },
+  "homepage": "https://github.com/AhmadAl-Ghalban/strapi-plugin-conditional-field-builder#readme"
 }

@@ -1,6 +1,10 @@
 # Conditional Field Builder — Strapi v5 Plugin
 
-> npm: [`strapi-plugin-conditional-field-builder`](https://www.npmjs.com/package/strapi-plugin-conditional-field-builder)
+[![npm version](https://img.shields.io/npm/v/strapi-plugin-conditional-field-builder.svg)](https://www.npmjs.com/package/strapi-plugin-conditional-field-builder)
+[![npm downloads](https://img.shields.io/npm/dm/strapi-plugin-conditional-field-builder.svg)](https://www.npmjs.com/package/strapi-plugin-conditional-field-builder)
+[![license](https://img.shields.io/npm/l/strapi-plugin-conditional-field-builder.svg)](https://github.com/AhmadAl-Ghalban/strapi-plugin-conditional-field-builder/blob/main/LICENSE)
+
+> **npm:** [`strapi-plugin-conditional-field-builder`](https://www.npmjs.com/package/strapi-plugin-conditional-field-builder)
 
 A production-ready custom field for **Strapi v5** that renders a dropdown
 whose selected value drives a dynamic set of conditional sub-fields —
@@ -33,27 +37,25 @@ schema.
 
 ## Installation
 
-From a Strapi v5 project root:
+From a Strapi v5 project root, install with your package manager of choice:
 
 ```bash
-# Option A — install from npm (recommended once published)
+# npm
 npm i strapi-plugin-conditional-field-builder
 
-# Option B — install from source
-cp -R conditional-field-builder ./src/plugins/conditional-field-builder
-cd ./src/plugins/conditional-field-builder
-npm install
-npm run build
+# yarn
+yarn add strapi-plugin-conditional-field-builder
+
+# pnpm
+pnpm add strapi-plugin-conditional-field-builder
 ```
 
-Enable the plugin in `config/plugins.ts`:
+Enable the plugin in `config/plugins.ts` (or `config/plugins.js`):
 
 ```ts
 export default ({ env }) => ({
   'conditional-field-builder': {
     enabled: true,
-    // Only needed for Option B (local source); omit when installed from npm.
-    // resolve: './src/plugins/conditional-field-builder',
   },
 });
 ```
@@ -64,6 +66,29 @@ Rebuild the admin panel and start Strapi:
 npm run build
 npm run develop
 ```
+
+<details>
+<summary><b>Alternative: install from source</b> (for local development / forks)</summary>
+
+```bash
+git clone https://github.com/AhmadAl-Ghalban/strapi-plugin-conditional-field-builder.git \
+  ./src/plugins/conditional-field-builder
+cd ./src/plugins/conditional-field-builder
+npm install
+npm run build
+```
+
+Then in `config/plugins.ts` add the `resolve` path:
+
+```ts
+export default ({ env }) => ({
+  'conditional-field-builder': {
+    enabled: true,
+    resolve: './src/plugins/conditional-field-builder',
+  },
+});
+```
+</details>
 
 ---
 
