@@ -14,6 +14,14 @@
 
 </div>
 
+## Demo
+
+<video src="https://github.com/user-attachments/assets/53d8b15c-a38e-4e07-99ea-8ce90235fa1d" controls width="720">
+  <a href="https://github.com/user-attachments/assets/53d8b15c-a38e-4e07-99ea-8ce90235fa1d">▶ Watch the demo</a>
+</video>
+
+> The `<video>` tag above plays inline on GitHub. On npmjs.com (which strips HTML), it falls back to the **▶ Watch the demo** link.
+
 ---
 
 ## Why this plugin?
@@ -161,6 +169,121 @@ In the field's *Options* panel, describe the options and the sub-fields each one
 ---
 
 ## Examples
+
+<details>
+<summary><b>Full example</b> — every supported field type in one config</summary>
+
+```json
+[
+  {
+    "label": "Text",
+    "value": "text",
+    "fields": [
+      { "name": "title",       "type": "text",     "required": true, "placeholder": "Enter title" },
+      { "name": "description", "type": "textarea", "placeholder": "Long description…" }
+    ]
+  },
+  {
+    "label": "Number & Range",
+    "value": "numeric",
+    "fields": [
+      { "name": "price",    "type": "number", "min": 0, "max": 9999, "step": 0.01, "required": true },
+      { "name": "quantity", "type": "number", "min": 1, "step": 1 },
+      { "name": "rating",   "type": "range",  "min": 0, "max": 10,   "step": 1 }
+    ]
+  },
+  {
+    "label": "Date & Time",
+    "value": "datetime",
+    "fields": [
+      { "name": "day",       "type": "date",     "required": true },
+      { "name": "startsAt",  "type": "datetime", "required": true },
+      { "name": "startTime", "type": "time" }
+    ]
+  },
+  {
+    "label": "Email + Password",
+    "value": "credentials",
+    "fields": [
+      { "name": "email",    "type": "email",    "required": true, "placeholder": "name@example.com" },
+      { "name": "password", "type": "password", "required": true, "placeholder": "••••••••" }
+    ]
+  },
+  {
+    "label": "Choice",
+    "value": "choice",
+    "fields": [
+      { "name": "country", "type": "select", "required": true,
+        "choices": [
+          { "label": "Saudi Arabia (+966)",  "value": "+966" },
+          { "label": "United States (+1)",   "value": "+1"   },
+          { "label": "United Kingdom (+44)", "value": "+44"  }
+        ]
+      },
+      { "name": "plan", "type": "radio", "required": true,
+        "choices": [
+          { "label": "Free", "value": "free" },
+          { "label": "Pro",  "value": "pro"  },
+          { "label": "Team", "value": "team" }
+        ]
+      },
+      { "name": "subscribe", "label": "Subscribe to newsletter", "type": "checkbox" },
+      { "name": "agree",     "label": "I accept the terms",      "type": "boolean", "required": true }
+    ]
+  },
+  {
+    "label": "Message",
+    "value": "message",
+    "fields": [
+      { "name": "subject", "type": "text",     "required": true, "placeholder": "Subject" },
+      { "name": "body",    "type": "textarea", "required": true, "placeholder": "Write your message…" }
+    ]
+  },
+  {
+    "label": "Boolean toggles",
+    "value": "flags",
+    "fields": [
+      { "name": "isPublished", "label": "Published",            "type": "boolean" },
+      { "name": "featured",    "label": "Featured on homepage", "type": "boolean" },
+      { "name": "comments",    "label": "Allow comments",       "type": "checkbox" }
+    ]
+  },
+  {
+    "label": "Date picker",
+    "value": "datePicker",
+    "fields": [
+      { "name": "publishOn",  "label": "Publish on",   "type": "date",     "required": true },
+      { "name": "expiresAt",  "label": "Expires at",   "type": "datetime" },
+      { "name": "reminderAt", "label": "Reminder time","type": "time" }
+    ]
+  },
+  {
+    "label": "Media (URL)",
+    "value": "media",
+    "fields": [
+      { "name": "imageUrl", "label": "Image URL", "type": "text",     "required": true, "placeholder": "https://cdn.example.com/img.jpg" },
+      { "name": "videoUrl", "label": "Video URL", "type": "text",     "placeholder": "https://youtube.com/watch?v=…" },
+      { "name": "alt",      "label": "Alt text",  "type": "text" },
+      { "name": "caption",  "type": "textarea" },
+      { "name": "autoplay", "type": "boolean" }
+    ]
+  },
+  {
+    "label": "Rich text",
+    "value": "richText",
+    "fields": [
+      { "name": "heading",  "type": "text",     "required": true, "placeholder": "Section heading" },
+      { "name": "subtitle", "type": "text",     "placeholder": "Optional subtitle" },
+      { "name": "content",  "type": "textarea", "required": true, "placeholder": "Markdown or plain text…" },
+      { "name": "footnote", "type": "text" }
+    ]
+  }
+]
+```
+
+> **Note on media:** this plugin doesn't ship a native `media`/file-upload sub-field. For images or videos, store a URL in a `text` field (as shown above) — or, if you need Strapi's Media Library, model that as a separate `media` field on the content-type and keep this conditional field for the variant data.
+
+</details>
 
 <details open>
 <summary><b>Contact methods</b> — select + email + phone + message</summary>
