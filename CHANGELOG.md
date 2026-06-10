@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2026-06-10
+
+### Fixed
+- Loosened the `react-intl` peer dependency range from `^6.8.9` to `^6.6.0` so the plugin installs cleanly into a fresh Strapi 5 project (Strapi 5.48 ships `react-intl@6.6.2`, which previously caused `ERESOLVE` peer conflicts).
+
 ## [0.1.1] - 2026-06-01
 
 ### Added
@@ -22,5 +27,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial release of `strapi-plugin-conditional-field-builder`: a Strapi v5 custom field that renders a dropdown whose selected option exposes a tailored set of sub-fields, stored as a single JSON value.
 - README with usage documentation and examples for conditional field configurations.
 
+[0.1.2]: https://github.com/AhmadAl-Ghalban/strapi-plugin-conditional-field-builder/releases/tag/v0.1.2
 [0.1.1]: https://github.com/AhmadAl-Ghalban/strapi-plugin-conditional-field-builder/releases/tag/v0.1.1
 [0.1.0]: https://github.com/AhmadAl-Ghalban/strapi-plugin-conditional-field-builder/releases/tag/v0.1.0
