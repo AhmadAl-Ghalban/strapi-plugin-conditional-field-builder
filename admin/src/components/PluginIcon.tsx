@@ -1,5 +1,12 @@
-import { PuzzlePiece } from "@strapi/icons";
+import logo from '../assets/logo.png';
 
-const PluginIcon = () => <PuzzlePiece />;
+const PluginIcon = () => (
+  <img
+    src={logo}
+    alt=""
+    aria-hidden
+    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+  />
+);
 
 export { PluginIcon };

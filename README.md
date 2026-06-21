@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="https://raw.githubusercontent.com/AhmadAl-Ghalban/strapi-plugin-conditional-field-builder/main/assets/logo.png" alt="Conditional Field Builder logo" width="120" height="120" />
+
 # Conditional Field Builder
 
 **A Strapi v5 custom field that turns one dropdown into a schema-less, per-option form — stored as a single JSON value.**
