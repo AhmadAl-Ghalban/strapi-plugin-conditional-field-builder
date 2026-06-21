@@ -9,6 +9,7 @@
 [![npm version](https://img.shields.io/npm/v/strapi-plugin-conditional-field-builder.svg?style=flat-square&color=4945ff)](https://www.npmjs.com/package/strapi-plugin-conditional-field-builder)
 [![npm downloads](https://img.shields.io/npm/dm/strapi-plugin-conditional-field-builder.svg?style=flat-square&color=4945ff)](https://www.npmjs.com/package/strapi-plugin-conditional-field-builder)
 [![license](https://img.shields.io/npm/l/strapi-plugin-conditional-field-builder.svg?style=flat-square)](./LICENSE)
+[![Strapi Marketplace](https://img.shields.io/badge/Strapi-Marketplace-4945ff.svg?style=flat-square&logo=strapi&logoColor=white)](https://market.strapi.io/plugins/strapi-plugin-conditional-field-builder)
 [![Strapi v5](https://img.shields.io/badge/Strapi-v5-4945ff.svg?style=flat-square)](https://strapi.io)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178c6.svg?style=flat-square)](https://www.typescriptlang.org/)
 
@@ -54,6 +55,8 @@ Strapi v5.17 introduced **Conditional Fields** — but they only toggle visibili
 ---
 
 ## Install
+
+Also available on the [Strapi Marketplace](https://market.strapi.io/plugins/strapi-plugin-conditional-field-builder).
 
 ```bash
 npm  i  strapi-plugin-conditional-field-builder
