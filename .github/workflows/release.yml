@@ -1,0 +1,83 @@
+name: Release on version bump
+
+# Runs when a PR is merged (i.e. a commit lands on main). If package.json
+# carries a version that has no matching git tag yet, it creates the tag and a
+# GitHub Release (notes pulled from CHANGELOG.md), then dispatches publish.yml
+# to publish that version to npm.
+#
+# Note: a release created with the built-in GITHUB_TOKEN does NOT trigger
+# publish.yml's `release: published` event (GitHub blocks workflow recursion),
+# so we trigger publish.yml explicitly via workflow_dispatch, which is exempt
+# from that restriction.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write # create tags and releases
+  actions: write # dispatch publish.yml
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # need full history/tags to detect existing releases
+
+      - name: Read version from package.json
+        id: pkg
+        run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Check whether the tag already exists
+        id: tag
+        run: |
+          if git rev-parse -q --verify "refs/tags/v${{ steps.pkg.outputs.version }}" >/dev/null; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "Tag v${{ steps.pkg.outputs.version }} already exists — nothing to release."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Extract release notes from CHANGELOG
+        if: steps.tag.outputs.exists == 'false'
+        id: notes
+        run: |
+          VERSION="${{ steps.pkg.outputs.version }}"
+          awk -v ver="$VERSION" '
+            $0 ~ "^## \\[" ver "\\]" { flag = 1; next }
+            /^## \[/ { flag = 0 }
+            flag { print }
+          ' CHANGELOG.md > RELEASE_NOTES.md
+          if [ -s RELEASE_NOTES.md ]; then
+            echo "have_notes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "have_notes=false" >> "$GITHUB_OUTPUT"
+            echo "No CHANGELOG section for $VERSION — auto-generating notes."
+          fi
+
+      - name: Create tag and GitHub Release
+        if: steps.tag.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ steps.pkg.outputs.version }}"
+          if [ "${{ steps.notes.outputs.have_notes }}" = "true" ]; then
+            gh release create "v$VERSION" \
+              --target "${{ github.sha }}" \
+              --title "v$VERSION" \
+              --notes-file RELEASE_NOTES.md
+          else
+            gh release create "v$VERSION" \
+              --target "${{ github.sha }}" \
+              --title "v$VERSION" \
+              --generate-notes
+          fi
+
+      - name: Trigger npm publish
+        if: steps.tag.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run publish.yml --ref main
