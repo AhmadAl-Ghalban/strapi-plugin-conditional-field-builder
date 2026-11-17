@@ -5,7 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.2.0] - 2026-11-17
+
+### Upgrade notes
+- Writes are now validated on the server. Requests that previously succeeded with invalid values (missing required sub-fields, a `selectedOption` no longer in the configured options, malformed JSON) now fail with `400 ValidationError`. Entries saved before upgrading are not changed, but editing one whose stored option was removed requires picking a valid option before it can be saved.
 
 ### Added
 - Server-side validation: a Document Service middleware applies the admin's validation rules to every `create` / `update` / `clone` (REST, GraphQL, programmatic), including fields nested in components and dynamic zones. Invalid values return `400 ValidationError` with per-field paths. Unknown options and malformed values are rejected.
@@ -60,6 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial release of `strapi-plugin-conditional-field-builder`: a Strapi v5 custom field that renders a dropdown whose selected option exposes a tailored set of sub-fields, stored as a single JSON value.
 - README with usage documentation and examples for conditional field configurations.
 
+[0.2.0]: https://github.com/AhmadAl-Ghalban/strapi-plugin-conditional-field-builder/releases/tag/v0.2.0
 [0.1.4]: https://github.com/AhmadAl-Ghalban/strapi-plugin-conditional-field-builder/releases/tag/v0.1.4
 [0.1.3]: https://github.com/AhmadAl-Ghalban/strapi-plugin-conditional-field-builder/releases/tag/v0.1.3
 [0.1.2]: https://github.com/AhmadAl-Ghalban/strapi-plugin-conditional-field-builder/releases/tag/v0.1.2
