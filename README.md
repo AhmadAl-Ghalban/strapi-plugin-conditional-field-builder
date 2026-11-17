@@ -48,6 +48,7 @@ Strapi v5.17 introduced **Conditional Fields** — but they only toggle visibili
 - **Type-safe** — TypeScript end-to-end, React 18
 - **`@strapi/design-system`** — looks and feels like the rest of the admin
 - **Built-in validation** — required, min/max, step, choices
+- **Server-side enforcement** — the same rules run on every write (REST, GraphQL, Document Service), not just in the admin UI
 - **i18n** — English, French, Arabic out of the box (drop a JSON file to add more)
 - **Plugin Settings page** — store a reusable default template for your team
 - **Unit tested** — pure validation utilities covered with Vitest
@@ -491,8 +492,11 @@ switch (page.cta.selectedOption) {
 ```text
 strapi-plugin-conditional-field-builder/
 ├─ server/src/
-│   ├─ register.ts                       # registers the custom field on the server
-│   └─ bootstrap.ts
+│   ├─ register.ts                       # registers the custom field + validation middleware
+│   ├─ bootstrap.ts
+│   └─ validation/
+│       ├─ validate-document.ts          # Document Service middleware (server-side rules)
+│       └─ __tests__/validate-document.test.ts
 ├─ admin/src/
 │   ├─ index.ts                          # registers field + settings link
 │   ├─ types.ts                          # shared TypeScript types
@@ -523,6 +527,32 @@ strapi-plugin-conditional-field-builder/
 | `validateValue(value, options, required)`      | Validate the full shape              |
 | `parseOptions(raw)`                            | Accepts an array or a JSON string    |
 | `parseValue(raw)`                              | Accepts an object or a JSON string   |
+
+### Server-side validation
+
+The plugin registers a [Document Service middleware](https://docs.strapi.io/cms/api/document-service/middlewares) that re-runs these same functions on every `create`, `update` and `clone`, so values written through the REST API, GraphQL, or `strapi.documents()` are checked too, including values inside components and dynamic zones. It rejects:
+
+- sub-field rule violations (`required`, `email`, `min`/`max`, invalid dates)
+- a `selectedOption` that isn't one of the configured options
+- malformed values (not an object, `data` not an object, non-string `selectedOption`)
+- no selection when the field itself is marked required
+
+Invalid writes return `400 ValidationError` with a path for each problem:
+
+```json
+{
+  "error": {
+    "status": 400,
+    "name": "ValidationError",
+    "message": "config.title: title is required",
+    "details": {
+      "errors": [{ "path": ["config", "title"], "message": "title is required", "name": "ValidationError" }]
+    }
+  }
+}
+```
+
+Partial updates that don't include the field, and `null` values, are left alone. Whether the field must be present at all is handled by Strapi's own `required` check, which respects drafts.
 
 ---
 

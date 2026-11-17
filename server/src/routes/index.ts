@@ -1,8 +1,10 @@
-import contentAPIRoutes from "./content-api";
 import adminAPIRoutes from "./admin";
 
+/**
+ * The plugin exposes no public (content-api) routes: the custom field is
+ * stored on the host content type and served through its own REST/GraphQL API.
+ */
 const routes = {
-  "content-api": contentAPIRoutes,
   admin: adminAPIRoutes,
 };
 
